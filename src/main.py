@@ -20,14 +20,16 @@ parser.add_argument('-r', '--repetition', type=int,
                     help='repetition number, dont specify this if you want it to be determined automatically', nargs='+')
 parser.add_argument('-id', '--id', type=str,
                     help='id of the job, dont specify this if you want no specific id for the jobs', nargs='+')
+"""-------------------------------------============"""
 parser.add_argument('-jt', '--job_type', type=str, default='optimizeBrain',
                     help='job type', choices=['optimizeBrain', 'makeGif', 'cooptimize', 'test'])
+"""------------------------------------============="""
 # evolutionary algorithm related arguments
 parser.add_argument('--evolutionary_algorithm', '-ea', type=str,
                     choices=['pareto'], default='pareto', help='choose the evolutionary algorithm')
-parser.add_argument('--optimize_fitness',
+parser.add_argument('-of','--optimize_fitness',
                     help='when using pareto optimization, use fitness as an optimization target', action='store_true')
-parser.add_argument('--optimize_age',
+parser.add_argument('-oa','--optimize_age',
                     help='when using pareto optimization, use age as an optimization target', action='store_true')
 parser.add_argument('--multifitness_type', '-mft', type=str,
                     choices=['min', 'avg', 'max'], default='min', help='choose how to combine the fitnesses')
@@ -86,6 +88,7 @@ def run(args):
         exit()
 
     if args.job_type == 'test':
+        print(args,"\n")
         tester = TESTER(args)
         tester.test()
         exit()

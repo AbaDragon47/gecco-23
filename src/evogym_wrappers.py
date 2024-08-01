@@ -1,4 +1,4 @@
-import gym
+import gymnasium as gym
 import numpy as np
 
 from evogym.envs import *
@@ -34,7 +34,11 @@ class ObservationWrapper(gym.Wrapper):
         return self.observe()
 
     def step(self, action):
-        obs, reward, done, info = self.env.step(action)
+        item = self.env.step(action)
+        obs = item[0]
+        reward= item[1]
+        done= item[2]
+        info = item[3]
         return self.observe(), reward, done, info
 
     def observe(self):
@@ -496,31 +500,34 @@ class SyncEnvWrapper(gym.core.Wrapper):
         return np.array(obs)
 
 class RenderWrapper(gym.core.Wrapper):
-    def __init__(self, env, render_mode='screen'):
+    def __init__(self, env, render_mode='img'):
         super().__init__(env)
         self.viewer = EvoViewer(env.sim, resolution=(300, 300), target_rps=120)
         self.viewer.track_objects('robot')
-        self.render_mode = render_mode
+        render_mode = render_mode
         self.imgs = []
 
     def step(self, action):
-        obs, reward, done, info = self.env.step(action)
+        obs, reward, done, info, r = self.env.step(action)
         if self.render_mode == 'screen':
             self.viewer.render(self.render_mode)
         elif self.render_mode == 'img':
             self.imgs.append(self.viewer.render(self.render_mode))
         else:
-            raise NotImplementedError
+            self.imgs.append(self.viewer.render('img'))
+            print("raise NotImplementedError")
         return obs, reward, done, info
 
     def reset(self):
         obs = self.env.reset()
+        print("\n\n\nrenderMode\n\n\n",self.render_mode)
         if self.render_mode == 'screen':
             self.viewer.render(self.render_mode)
         elif self.render_mode == 'img':
             self.imgs.append(self.viewer.render(self.render_mode))
         else:
-            raise NotImplementedError
+            self.imgs.append(self.viewer.render("img"))
+            print("raise NotImplementedError")
         return obs
 
     def close(self):
@@ -544,7 +551,7 @@ class ActionSkipWrapper(gym.core.Wrapper):
 
 def make_env(gym_id, body, seed, idx, capture_video, render_mode, run_name, **kwargs):
     def thunk():
-        env = gym.make(gym_id, body=body, connections=get_full_connectivity(body))
+        env = gym.make(gym_id, body=body, connections=get_full_connectivity(body),render_mode=render_mode )
         env = gym.wrappers.RecordEpisodeStatistics(env)
         if capture_video:
             if idx == 0:

@@ -1,9 +1,9 @@
-import gym
+import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
 from pygifsicle import optimize
 import imageio
-import _pickle as pickle
+import pickle as pickle
 
 from population import POPULATION
 from evogym.envs import *
@@ -24,9 +24,10 @@ class MAKEGIF():
 
     def run(self):
         for b in self.ind.body.bodies:
-            env = gym.make(self.kwargs['task'], body=b['structure'], connections=get_full_connectivity(b['structure']))
+            env = gym.make(self.kwargs['task'], body=b['structure'], connections = get_full_connectivity(b['structure']))
             env = gym.wrappers.RecordEpisodeStatistics(env)
-            env = RenderWrapper(env, render_mode='img')
+            #env = RenderWrapper(env, render_mode='img')
+            env = RenderWrapper(env)
             if 'sparse_acting' in self.kwargs and self.kwargs['sparse_acting']:
                 env = ActionSkipWrapper(env, skip=self.kwargs['act_every'])
             env = ActionSpaceCorrectionWrapper(env)
@@ -38,7 +39,7 @@ class MAKEGIF():
                 env = GlobalActionWrapper(env, **self.kwargs)
             else:
                 raise ValueError('Unknown controller', self.kwargs['controller'])
-            env.seed(17)
+            #env.seed(17)
             env.action_space.seed(17)
             env.observation_space.seed(17)
 

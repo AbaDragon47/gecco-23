@@ -1,5 +1,5 @@
 import multiprocessing
-import gym
+import gymnasium as gym
 import numpy as np
 
 from evogym.envs import *
@@ -23,7 +23,8 @@ def make_env(body, **kwargs):
         env = GlobalActionWrapper(env, **kwargs)
     else:
         raise ValueError('Unknown controller', kwargs['controller'])
-    env.seed(17)
+    #env.reset(env.seed(17))
+    #print(env.seed(17))
     env.action_space.seed(17)
     env.observation_space.seed(17)
     return env

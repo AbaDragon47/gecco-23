@@ -1,5 +1,5 @@
 import numpy as np
-import gym
+import gymnasium as gym
 import os
 import shutil
 from copy import deepcopy
@@ -283,11 +283,11 @@ def get_moore_neighbors(x, y, bounding_box, observation_range):
 
 # file locking for concurrent access to the same file
 # the solution is taken from https://stackoverflow.com/questions/489861/locking-a-file-in-python
-import fcntl
+"""import fcntl
 def lock_file(f):
     if f.writable(): fcntl.lockf(f, fcntl.LOCK_EX)
 def unlock_file(f):
-    if f.writable(): fcntl.lockf(f, fcntl.LOCK_UN)
+    if f.writable(): fcntl.lockf(f, fcntl.LOCK_UN)"""
 # Class for ensuring that all file operations are atomic, treat
 # initialization like a standard call to 'open' that happens to be atomic.
 ###### This file opener *must* be used in a "with" block.
@@ -298,7 +298,7 @@ class ATOMICOPEN:
         # Open the file and acquire a lock on the file before operating
         self.file = open(path,*args, **kwargs)
         # Lock the opened file
-        lock_file(self.file)
+        #lock_file(self.file)
 
     # Return the opened file object (knowing a lock has been obtained).
     def __enter__(self, *args, **kwargs): return self.file
@@ -309,7 +309,7 @@ class ATOMICOPEN:
         self.file.flush()
         os.fsync(self.file.fileno())
         # Release the lock on the file.
-        unlock_file(self.file)
+        #unlock_file(self.file)
         self.file.close()
         # Handle exceptions that may have come up during execution, by
         # default any exceptions are raised to the user.

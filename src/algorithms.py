@@ -1,21 +1,21 @@
 import os
 import shutil
 import random
-import _pickle as pickle
+import pickle as pickle
 import math
 from copy import deepcopy
 import numpy as np
 import subprocess as sub
-import cma
+#import cma
 import time
 import string
-from datetime import datetime
-from itertools import permutations
+#from datetime import datetime
+#from itertools import permutations
 
 from utils import get_files_in, create_folder_structure, natural_sort, get_immediate_subdirectories_of
 from simulator import simulate_population
 from make_gif import MAKEGIF
-from population import POPULATION
+#from population import POPULATION
 
 
 class EVOLUTIONARY_ALGORITHM():
@@ -59,7 +59,6 @@ class EVOLUTIONARY_ALGORITHM():
             self.best_fitness = self.population[0].fitness
 
     def optimize(self):
-
         self.initialize_optimization()
         # write a file to indicate that the job is running
         with open(self.args.rundir + '/RUNNING', 'w') as f:

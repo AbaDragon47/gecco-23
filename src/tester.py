@@ -1,7 +1,7 @@
-import gym
+import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
-import _pickle as pickle
+import pickle as pickle
 import time
 
 from body import FIXED_BODY

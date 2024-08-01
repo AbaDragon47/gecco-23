@@ -1,7 +1,7 @@
 import numpy as np
-import _pickle as pickle
+import pickle as pickle
 
-from evogym import get_full_connectivity, is_connected
+from evogym import get_full_connectivity, is_connected # type: ignore
 
 triped = np.array([ 
           [3,3,3,3,3],

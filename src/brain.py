@@ -4,7 +4,7 @@ from torch.nn.utils import parameters_to_vector, vector_to_parameters
 from torch import sigmoid
 import numpy as np
 from copy import deepcopy
-import _pickle as pickle
+import pickle as pickle
 
 class BRAIN(object):
     def __init__(self, name, args):
